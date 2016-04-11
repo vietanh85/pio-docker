@@ -1,2 +1,5 @@
 # HDFS Docker Container for PredictionIO
-PredictionIO stacks in Docker
+PredictionIO Docker Contaner Stacks
+
+`docker run -d -P vietanh85/hdfs:2.7.1`
+
