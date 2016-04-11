@@ -1,0 +1,1 @@
+FROM vietanh85/hbase-onbuild:1.2.1
