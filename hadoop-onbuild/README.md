@@ -1,2 +1,2 @@
-# docker-onbuild
+# Hadoop Onbuild Container for PredictionIO
 PredictionIO stacks in Docker

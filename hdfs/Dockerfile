@@ -1,0 +1,1 @@
+FROM vietanh85/hadoop-onbuild:2.7.1
