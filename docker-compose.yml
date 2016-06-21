@@ -1,0 +1,74 @@
+version: '2'
+services:
+  elasticsearch:
+    image: 'elasticsearch:1.7'
+
+  hadoop_onbuild:
+    image: 'vietanh85/hadoop-onbuild:2.7.1'
+    build: ./hadoop-onbuild
+
+  hdfs:
+    image: 'vietanh85/hdfs:2.7.1'
+    build: ./hdfs
+    depends_on:
+      - hadoop_onbuild
+
+  hbase_onbuild:
+    image: 'vietanh85/hbase-onbuild:1.2.1'
+    build: ./hbase-onbuild
+
+  hbase_master:
+    image: 'vietanh85/hbase-master:1.2.1'
+    build: ./hbase-master
+    depends_on:
+      - hbase_onbuild
+    ports:
+    - '2181:2181'
+    links:
+    - hdfs
+    environment:
+      HDFS_HOST: 'hdfs'
+      HDFS_PORT: '9000'
+
+  spark:
+    image: 'vietanh85/spark:1.6.1'
+    build: ./spark
+
+  pio_onbuild:
+    image: 'vietanh85/pio-onbuild:1.2.1'
+    build: ./pio-onbuild
+    depends_on:
+      - spark
+
+  pio_eventserver:
+    image: 'vietanh85/pio-eventserver:0.9.5'
+    build: ./pio-eventserver
+    depends_on:
+      - pio_onbuild
+    restart: always
+    ports:
+    - '7070:7070'
+    links:
+    - 'hdfs'
+    - 'hbase_master:hbase'
+    - 'elasticsearch'
+    entrypoint: './wait-for-it.sh hbase:2181'
+    environment:
+      HDFS_HOST: 'hdfs'
+      HDFS_PORT: '9000'
+      HBASE_MASTER_IP: 'hbase'
+      HBASE_MASTER_HOST: 'hbase'
+      HBASE_MASTER_PORT: '16000'
+      REGION_SERVER_PORT: '16020'
+      ZOOKEEPER_HOST: 'hbase'
+      ZOOKEEPER_PORT: '2181'
+      ELASTICSEARCH_HOST: 'elasticsearch'
+      ELASTICSEARCH_PORT: '9300'
+      ELASTICSEARCH_CLUSTERNAME: 'elasticsearch'
+
+
+
+
+
+      
+
