@@ -11,5 +11,10 @@ sed -i "s/@HBASE_MASTER_HOST@/$HBASE_MASTER_HOST/g" $HBASE_CONF_DIR/hbase-site.x
    && sed -i "s/@ELASTICSEARCH_PORT@/$ELASTICSEARCH_PORT/g" $HBASE_CONF_DIR/pio-env.sh \
    && sed -i "s/@ELASTICSEARCH_CLUSTERNAME@/$ELASTICSEARCH_CLUSTERNAME/g" $HBASE_CONF_DIR/pio-env.sh
 
+
+HBASE_MASTER_IP=`ping -q -c 1 $HBASE_MASTER_HOST | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"`
+
 echo "$HBASE_MASTER_IP $HBASE_MASTER_HOST" >> "/etc/hosts"
+
+cat /etc/hosts
 

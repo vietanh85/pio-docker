@@ -13,6 +13,8 @@ ENV PIO_FS_ENGINESDIR=$PIO_FS_BASEDIR/engines \
 RUN curl -Ls https://d8k1yxp8elc6b.cloudfront.net/PredictionIO-$PIO_VERSION.tar.gz | tar -xz -C /usr/share \
  && ln -s /usr/share/PredictionIO-$PIO_VERSION $PIO_HOME
 
+WORKDIR $PIO_HOME
+
 COPY conf/*.* $HBASE_CONF_DIR/
 COPY *.sh $PIO_HOME/bin/
 # COPY wait.sh $PIO_HOME/bin/wait.sh
